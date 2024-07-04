@@ -1,0 +1,67 @@
+@import '../properties.scss';
+
+.success-box{
+    width: 50%;
+    background-color: $white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -30%);
+    border-radius: 10px;
+    border: 1px inset grey;
+    padding: 2rem 4rem;
+
+    .success-title{
+        color: #5D6B82;
+        font-weight: bold;
+    }
+
+    .success-content{
+        color: #5D6B82;
+    }
+
+    .success-header{
+        @include flex();
+        flex-direction: column;
+        text-align: center
+    }
+
+    .success-transactionDate{
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .success-method{
+        @extend .success-transactionDate;
+        gap: .5rem;
+    }
+
+    .success-price{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 1.2rem;
+    }
+
+    .success-tax{
+        @extend .success-price;
+    }
+
+    .success-shipment{
+        @extend .success-price;
+        margin-top: .5rem;
+        margin-bottom: .5rem;
+    }
+
+    .success-total{
+        @extend .success-price;
+        margin-bottom: 1rem;
+    }
+
+    .success-button{
+        @include confirmButton(1rem, 1.5rem);
+        text-align: center;
+        font-weight: bold;
+    }
+}

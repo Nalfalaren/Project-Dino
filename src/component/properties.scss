@@ -1,0 +1,52 @@
+$black: black;
+$white: white;
+$colorProduct:  rgb(69, 66, 66);
+@mixin firstSentence(){
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+}
+@mixin flex(){
+    display: flex;
+    align-items: center;
+}
+
+@mixin flexForReal(){
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@mixin marginForBox($width, $height){
+    max-width: $width;
+    margin: 0 auto $height;
+}
+@mixin imgSet($widthSize, $heightSize){
+    width: $widthSize;
+    height: $heightSize;
+    object-fit: cover;
+}
+
+@mixin grid($col, $min){
+    display: grid;
+    grid-template-columns: repeat($col, minmax($min, 1fr));
+}
+
+@mixin colorForButton($rem){
+        color:   #EB6440;
+        background-color: transparent;
+        border: 1px solid   #EB6440;
+        padding: 0.5rem $rem;
+        border-radius: 5px;
+        font-weight: bold;
+}
+
+@mixin confirmButton($rem1, $rem2){
+    padding: $rem1 $rem2; 
+    background-color:  #EB6440;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+}

@@ -1,0 +1,102 @@
+@import '../properties.scss';
+
+* {
+    @include firstSentence();
+}
+
+.product {
+    @include marginForBox(75%, 4em);
+    position: relative;
+    .product-title {
+        text-align: center;
+        color: $black;
+        font-size: clamp(1.563rem, 1.328rem + 1.25vw, 2.5rem);
+        margin-bottom: 3rem;
+    }
+
+    .product-wrapper {
+        @include grid(auto-fill, 200px);
+        gap: 3rem;
+    }
+
+    .product-box {
+        .product-img {
+            position: relative;
+
+        }
+
+        .product-heart {
+            color: red;
+            position: absolute;
+            top: 2%;
+            left: 85%;
+        }
+
+        .product-info {
+            .product-name {
+                padding: 0.5rem 0;
+                color: $colorProduct;
+                font-size: clamp(0.813rem, 0.734rem + 0.417vw, 1rem);
+                font-weight: bold;
+            }
+
+            .product-sub-info {
+                color: $black;
+                font-weight: bold;
+                @include flexForReal();
+            }
+        }
+
+        .img {
+            text-align: center;
+            .img-cover{
+                padding: 2.5rem;
+                background-color: #F3F3F3;
+                img {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
+
+        .product-button{
+            @include colorForButton(1.8rem);
+            &:hover.product-button{
+                background-color: #EB6440;
+                color: $white;
+                font-weight: bold;
+                border: none;
+            }
+        }
+    }
+    .product-message {
+        position: fixed;
+        top: 90%;
+        left: 40%;
+        background-color: #F3F3F3;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, .5);
+        width: 30%;
+        text-align: center;
+        padding: 1rem;
+        border-radius: 50px;
+        font-size: 1rem;
+        margin: 2em auto 4em;
+        font-weight: bold;
+        animation-name: moveup;
+        animation-duration: 1s;
+    }
+    
+    @keyframes moveup {
+            from {transform: translateY(0px);}
+            to {transform: translateY(-50px);}
+          
+    }    
+}    
+
+@media (min-width: 1000px) {
+    .product-wrapper {
+        display: grid!important;
+        grid-template-columns: repeat(3, minmax(0px, 1fr))!important;
+    }
+}
+

@@ -1,0 +1,151 @@
+@import '../properties.scss';
+
+* {
+    @include firstSentence();
+}
+
+nav {
+    @include flex();
+    justify-content: space-between;
+    position: sticky;
+    @include marginForBox(85%, 4em);
+    padding-top: 2rem;
+    z-index: 9999;
+
+    .left-side {
+        @include flex();
+
+        .nav-title{
+            font-weight: 600;
+            font-size: 1.5rem;
+            margin-left: 0.8rem;
+        }
+        .dino-icon {
+            width: 40px;
+            height: 40px;
+
+            .nav-img {
+                @include imgSet(100%, 100%);
+            }
+        }
+
+    }
+
+    .right-side {
+        @include flex();
+        gap: 3rem;
+        font-size: 1.1rem;
+        font-weight: 500;
+        .shopping {
+            position: relative;
+            .shopping-title {
+                @include flex();
+                gap: 0.7rem;
+            }
+
+            .cart-wrapper {
+                position: absolute;
+                top: 0%;
+                right: -150%;
+                margin-top: 3rem;
+                background-color: $white;
+                width: 700px;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, .5);
+                border-radius: 5px;
+                padding: 2rem;
+                .cart-box{
+                    @include flex();
+                    gap: 2rem;
+                    padding: .5rem;
+
+                img {
+                    width: 20%;
+                    height: auto;
+                }
+
+                .cart-name{
+                    color: rgb(83, 78, 78);
+                    font-weight: bold;
+                    font-size: 1rem;
+                }
+
+                .cart-operation{
+                    border: none;
+                    background-color: transparent;
+                    font-size: 20px;
+                }
+
+                .cart-price{
+                    font-weight: bold;
+                    color: black;
+                }
+
+                .cart-quantity{
+                    @extend .cart-price;
+                }
+                
+            }
+            }
+            .cart-check{
+                @include flexForReal();
+                margin-top: 2rem;
+                .cart-total{
+                    font-size: 1.2rem;
+                    font-weight: bold;
+                }
+                button{
+                    @include confirmButton(1rem, 1.5rem);
+                }
+              
+            }
+        }
+    }
+
+
+    .whilist {
+        .whilist-title{
+        @include flex();
+        gap: 0.7rem;
+        position: relative;
+        }
+
+        .whilist-wrapper {
+            position: absolute;
+            top: 100%;
+            right: -5%;
+            background-color: $white;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, .5);
+            width: 300px;
+            padding: 1rem;
+
+            .whilist-box {
+                @include flex();
+                gap: 20px;
+
+            }
+
+            .whilist-button {
+                @include colorForButton(0.8rem);
+                margin-top: 0.3rem;
+            }
+
+            img {
+                width: 30%;
+                height: auto;
+                margin-left: 1rem;
+            }
+        }
+    }
+}
+
+
+@media (max-width: 500px) {
+    nav {
+        @include marginForBox(90%, 4em);
+
+        .right-side {
+            gap: 1rem;
+        }
+    }
+
+}

@@ -1,0 +1,75 @@
+@import '../properties.scss';
+
+* {
+    @include firstSentence();
+}
+
+.ads-block {
+    @include flexForReal();
+    @include marginForBox(90%, 4em);
+    padding: 2.75rem;
+    background-color: $black;
+    border-radius: 50px;
+    padding-inline: 2rem;
+    color: $white;
+
+    .ads-title {
+        margin-bottom: 1rem;
+
+        h1 {
+            font-size: clamp(1.875rem, 1.58rem + 1.571vw, 3.5rem);
+        }
+    }
+
+    .ads-para {
+        margin-bottom: 2rem;
+
+        p {
+            font-size: clamp(0.625rem, 0.5rem + 0.667vw, 1.125rem);
+        }
+    }
+
+    .ads-scroll {
+        text-decoration: none;
+        text-align: center;
+
+        .ads-button {
+            @include flex();
+            background-color: rgb(255, 106, 0);
+            border-radius: 0.5rem;
+            padding: 0.7rem 1.2rem;
+            width: 220px;
+
+            p {
+                text-decoration: none;
+                font-size: 0.9rem;
+                color: $white;
+            }
+
+            .arrow {
+                color: white;
+            }
+        }
+    }
+
+    .ads-img {
+        .ads-icon {
+            @include imgSet(100%, 100%);
+        }
+
+    }
+}
+
+@media (max-width: 800px) {
+
+    .ads-block {
+        flex-direction: column-reverse;
+        gap: 4rem;
+        .ads-content {
+            text-align: center;
+            .ads-button {
+                margin: 0 auto 6em;
+            }
+        }
+    }
+}
