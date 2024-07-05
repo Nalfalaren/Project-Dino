@@ -22,7 +22,7 @@ const Navbar = ({
     <nav>
       <div className="left-side">
         <div className="dino-icon">
-          <img src="./assets/dino1.png" alt="img" className="nav-img" />
+          <img src="./dino1.png" alt="img" className="nav-img" />
         </div>
         <span className="nav-title">Dinomerch</span>
       </div>

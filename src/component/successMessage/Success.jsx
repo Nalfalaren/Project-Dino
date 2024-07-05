@@ -3,7 +3,7 @@ const Success = ({ handleSent, totalPrice }) => {
   return (
     <div className="success-box">
       <div className="success-header">
-        <img src="./assets/confirm.png" alt="img"></img>
+        <img src="./confirm.png" alt="img"></img>
         <span className="success-title">Thanks for your order!</span>
         <span className="success-content">
           The order confirmation has been sent to your @email

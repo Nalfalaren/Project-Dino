@@ -234,7 +234,7 @@ const Product = () => {
           <div className="product-message">
             <img
               src={
-                positive === false ? "./assets/wrong.png" : "./assets/right.png"
+                positive === false ? "./wrong.png" : "./right.png"
               }
               alt="img"
               style={{ marginRight: "1rem" }}
