@@ -5,13 +5,15 @@ import Navbar from "../navbar/Navbar";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
-import * as yup from "yup";
+import { z } from "zod";
 import Success from "../successMessage/Success";
 import "../checkout/Checkout.scss";
+
 const Checkout = () => {
   const location = useLocation();
   const newListCart = location.state.newListCart;
   const totalPrice = location.state.totalPrice;
+
   const [userData, setUserData] = useState({
     firstName: "",
     lastName: "",
@@ -22,21 +24,23 @@ const Checkout = () => {
     expirationDate: "",
     cvv: "",
   });
+  
+  const [errors, setErrors] = useState({});
   const [isSent, setIsSent] = useState(false);
+
   const handleSent = () => {
     setIsSent(false);
   };
-  const schema = yup.object().shape({
-    firstName: yup.string().required(),
-    lastName: yup.string().required(),
-    phone: yup.number().required(),
-    address: yup.string().required(),
-    cardName: yup.string().required(),
-    cardNumber: yup.number().required(),
-    expDate: yup.number().required(),
-    cvv: yup.number().required(),
-    numberOfItems: yup.number().required(),
-    orderTotal: yup.string().required(),
+
+  const schema = z.object({
+    firstName: z.string().nonempty('Enter the first name!'),
+    lastName: z.string().nonempty('Enter the last name!'),
+    phoneNumber: z.string().nonempty('Enter the phone number!').regex(/^\d+$/, 'Enter a valid phone number!'),
+    address: z.string().nonempty('Enter the address!'),
+    cardHolder: z.string().nonempty('Enter the cardholder name!'),
+    cardNumber: z.string().nonempty('Enter the card number!').regex(/^\d+$/, 'Enter a valid card number!'),
+    expirationDate: z.string().nonempty('Enter the expiration date!'),
+    cvv: z.string().nonempty('Enter the CVV!').regex(/^\d+$/, 'Enter a valid CVV!'),
   });
 
   const handleUserData = (e) => {
@@ -48,53 +52,49 @@ const Checkout = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const isValid = schema.isValidSync(userData);
-    if (!isValid) {
-      console.log("Wrong input!");
-    }
-    const url = `https://testapi.io/api/dinomerch/resource/payment`;
-    axios
-      .post(url, {
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        phone: userData.phoneNumber,
-        address: userData.address,
-        cardName: userData.cardHolder,
-        cardNumber: userData.cardNumber,
-        expDate: userData.expirationDate,
-        cvv: userData.cvv,
+    try {
+      schema.parse(userData);
+      setErrors({});
+      const url = `https://testapi.io/api/dinomerch/resource/payment`;
+      await axios.post(url, {
+        ...userData,
         numberOfItems: newListCart.length,
         orderTotal: totalPrice.toString(),
-      })
-      .then((response) => {
-        setIsSent(true);
-      })
-      .catch((err) => {
       });
-    setUserData({
-      firstName: "",
-      lastName: "",
-      phoneNumber: "",
-      address: "",
-      cardHolder: "",
-      cardNumber: "",
-      expirationDate: "",
-      cvv: "",
-    });
+      setIsSent(true);
+      setUserData({
+        firstName: "",
+        lastName: "",
+        phoneNumber: "",
+        address: "",
+        cardHolder: "",
+        cardNumber: "",
+        expirationDate: "",
+        cvv: "",
+      });
+    } catch (err) {
+      if (err.errors) {
+        const newErrors = err.errors.reduce((acc, curr) => {
+          acc[curr.path[0]] = curr.message;
+          return acc;
+        }, {});
+        setErrors(newErrors);
+      }
+    }
   };
 
   return (
     <div className="checkout-page">
-      <Navbar></Navbar>
+      <Navbar />
       <div className="checkout">
         <div className="product-link">
-          <ArrowBackIcon></ArrowBackIcon>
+          <ArrowBackIcon />
           <Link to={"/"} className="link">
-            Back to Hompage
+            Back to Homepage
           </Link>
         </div>
         <div className="checkout-info">
-          <form action="/payment" method="POST" onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit}>
             <div className="checkout-wrapper">
               <div className="checkout-left">
                 <h1>Shipping Address</h1>
@@ -106,7 +106,8 @@ const Checkout = () => {
                       name="firstName"
                       value={userData.firstName}
                       onChange={handleUserData}
-                    ></input>
+                    />
+                    {errors.firstName && <span className="checkout-error">{errors.firstName}</span>}
                   </div>
                   <div className="checkout-lastname">
                     <label>Last Name</label>
@@ -115,7 +116,8 @@ const Checkout = () => {
                       name="lastName"
                       value={userData.lastName}
                       onChange={handleUserData}
-                    ></input>
+                    />
+                    {errors.lastName && <span className="checkout-error">{errors.lastName}</span>}
                   </div>
                 </div>
                 <div className="checkout-phonenumber">
@@ -125,7 +127,8 @@ const Checkout = () => {
                     name="phoneNumber"
                     value={userData.phoneNumber}
                     onChange={handleUserData}
-                  ></input>
+                  />
+                  {errors.phoneNumber && <span className="checkout-error">{errors.phoneNumber}</span>}
                 </div>
                 <div className="checkout-address">
                   <label>Street Address</label>
@@ -134,13 +137,14 @@ const Checkout = () => {
                     name="address"
                     value={userData.address}
                     onChange={handleUserData}
-                  ></input>
+                  />
+                  {errors.address && <span className="checkout-error">{errors.address}</span>}
                 </div>
               </div>
               <div className="checkout-right">
                 <h1>Payment Details</h1>
                 <div className="payment-card">
-                  <img src="./assets/card.png" alt="img"></img>
+                  <img src="./assets/card.png" alt="Card" />
                   <span className="card-name">Visa/Mastercard</span>
                 </div>
                 <div className="payment-cardholder">
@@ -150,16 +154,18 @@ const Checkout = () => {
                     name="cardHolder"
                     value={userData.cardHolder}
                     onChange={handleUserData}
-                  ></input>
+                  />
+                  {errors.cardHolder && <span className="checkout-error">{errors.cardHolder}</span>}
                 </div>
                 <div className="payment-number">
-                  <label>Card number</label>
+                  <label>Card Number</label>
                   <input
                     type="text"
                     name="cardNumber"
                     value={userData.cardNumber}
                     onChange={handleUserData}
-                  ></input>
+                  />
+                  {errors.cardNumber && <span className="checkout-error">{errors.cardNumber}</span>}
                 </div>
                 <div className="payment-subinfo">
                   <div className="payment-date">
@@ -169,7 +175,8 @@ const Checkout = () => {
                       name="expirationDate"
                       value={userData.expirationDate}
                       onChange={handleUserData}
-                    ></input>
+                    />
+                    {errors.expirationDate && <span className="checkout-error">{errors.expirationDate}</span>}
                   </div>
                   <div className="payment-cvv">
                     <label>CVV</label>
@@ -178,7 +185,8 @@ const Checkout = () => {
                       name="cvv"
                       value={userData.cvv}
                       onChange={handleUserData}
-                    ></input>
+                    />
+                    {errors.cvv && <span className="checkout-error">{errors.cvv}</span>}
                   </div>
                 </div>
               </div>
@@ -193,7 +201,7 @@ const Checkout = () => {
           <div className="order-wrapper" style={{ backgroundColor: "#F3F3F3" }}>
             {newListCart.map((item, index) => (
               <div className="order-box" key={index}>
-                <img src={item.img} alt="img"></img>
+                <img src={item.img} alt={item.name} />
                 <div className="order-info">
                   <p className="order-name">{item.name}</p>
                   <p>
@@ -225,10 +233,10 @@ const Checkout = () => {
               <span>$0.80</span>
             </div>
           </div>
-          <hr></hr>
+          <hr />
           <div className="order-total">
             <span>Order total: </span>
-            <span>${(totalPrice + 6.5 + 0.8).toFixed(2)}$</span>
+            <span>${(totalPrice + 6.5 + 0.8).toFixed(2)}</span>
           </div>
         </div>
       </div>
@@ -238,7 +246,7 @@ const Checkout = () => {
           setIsSent={setIsSent}
           handleSent={handleSent}
           totalPrice={totalPrice}
-        ></Success>
+        />
       )}
     </div>
   );

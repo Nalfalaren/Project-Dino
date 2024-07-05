@@ -5,6 +5,10 @@
 }
 
 .checkout {
+    .checkout-error{
+        color: red;
+        font-weight: 500;
+    }
     .product-link {
         @include flex();
         gap: .7rem;

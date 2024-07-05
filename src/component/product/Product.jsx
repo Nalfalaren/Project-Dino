@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
-import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
-import Navbar from '../navbar/Navbar';
-import Ads from '../ads/Ads';
-import { useNavigate } from 'react-router-dom';
-import '../product/Product.scss';
+import React, { useEffect, useState } from "react";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
+import Navbar from "../navbar/Navbar";
+import Ads from "../ads/Ads";
+import { useNavigate } from "react-router-dom";
+import "../product/Product.scss";
 const Product = () => {
   const [productData, setProductData] = useState(null);
   const [heartStates, setHeartStates] = useState({});
@@ -19,12 +19,14 @@ const Product = () => {
   const navigate = useNavigate();
 
   const handleCheckout = () => {
-    navigate('/payment', { state: { newListCart, totalPrice } });
-   };
+    navigate("/payment", { state: { newListCart, totalPrice } });
+  };
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`https://dinomerch.onrender.com/api/products`);
+      const response = await fetch(
+        `https://dinomerch.onrender.com/api/products`
+      );
       const res = await response.json();
       setProductData(res.data);
     } catch (error) {
@@ -53,12 +55,11 @@ const Product = () => {
   const handleHeart = (id) => {
     setHeartStates((prevStates) => {
       const newHeartStates = { ...prevStates, [id]: !prevStates[id] };
-      if(newHeartStates[id]){
+      if (newHeartStates[id]) {
         showMessageAndHide("Added to Wish List");
         setPositive(true);
-      }
-      else{
-        showMessageAndHide("Removed from Wish List")
+      } else {
+        showMessageAndHide("Removed from Wish List");
         setPositive(false);
       }
       return newHeartStates;
@@ -76,12 +77,15 @@ const Product = () => {
         setNewList((prevList) => {
           if (newData[index].isWishListed) {
             if (!prevList.some((item) => item.name === newData[index].name)) {
-              return [...prevList, {
-                id: newData[index]._id,
-                img: newData[index].image,
-                name: newData[index].name,
-                price: newData[index].price,
-              }];
+              return [
+                ...prevList,
+                {
+                  id: newData[index]._id,
+                  img: newData[index].image,
+                  name: newData[index].name,
+                  price: newData[index].price,
+                },
+              ];
             }
           } else {
             return prevList.filter((item) => item.name !== newData[index].name);
@@ -104,7 +108,7 @@ const Product = () => {
           img: newCartList[index].image,
           name: newCartList[index].name,
           price: newCartList[index].price,
-          count: 1
+          count: 1,
         };
         setNewListCart((prevList) => {
           if (!prevList.some((item) => item.id === updatedCart.id)) {
@@ -123,13 +127,14 @@ const Product = () => {
     });
   };
 
-
   const handleQuantity = (operation, id) => {
     setNewListCart((prevList) => {
       return prevList.map((item) => {
         if (item.id === id) {
-          const updatedCount = operation === "+" ? item.count + 1 : Math.max(item.count - 1, 1);
-          const priceDifference = updatedCount * item.price - item.count * item.price;
+          const updatedCount =
+            operation === "+" ? item.count + 1 : Math.max(item.count - 1, 1);
+          const priceDifference =
+            updatedCount * item.price - item.count * item.price;
           const newTotalPrice = totalPrice + priceDifference;
           setTotalPrice(newTotalPrice);
           return {
@@ -146,10 +151,10 @@ const Product = () => {
   const handleDeleteCart = (id) => {
     setNewListCart((prevData) => {
       const newData = [...prevData];
-      const removeItem = prevData.find(item => item.id === id);
-      const newTotalPrice = totalPrice - (removeItem.price * removeItem.count);
+      const removeItem = prevData.find((item) => item.id === id);
+      const newTotalPrice = totalPrice - removeItem.price * removeItem.count;
       setTotalPrice(newTotalPrice);
-      showMessageAndHide("Removed from cart list")
+      showMessageAndHide("Removed from cart list");
       setPositive(false);
       return newData.filter((item) => item.id !== id);
     });
@@ -166,7 +171,6 @@ const Product = () => {
   useEffect(() => {
     fetchData();
   }, []);
-
 
   return (
     <div>
@@ -187,16 +191,21 @@ const Product = () => {
 
       <Ads />
       {/* Product code*/}
-      <div className='product' id='Product'>
-        <h1 className='product-title'>Chrome Dino Merch</h1>
+      <div className="product" id="Product">
+        <h1 className="product-title">Chrome Dino Merch</h1>
         {productData && (
-          <div className='product-wrapper'>
+          <div className="product-wrapper">
             {productData.map((product) => (
-              <div className='product-box' key={product._id}>
-                <div className='product-img'>
-                  <div className='img'>
-                    <div className='img-cover'><img src={product.image} alt='img' /></div>
-                    <div className='product-heart' onClick={() => handleHeart(product._id)}>
+              <div className="product-box" key={product._id}>
+                <div className="product-img">
+                  <div className="img">
+                    <div className="img-cover">
+                      <img src={product.image} alt="img" />
+                    </div>
+                    <div
+                      className="product-heart"
+                      onClick={() => handleHeart(product._id)}
+                    >
                       {heartStates[product._id] ? (
                         <FavoriteOutlinedIcon />
                       ) : (
@@ -205,23 +214,36 @@ const Product = () => {
                     </div>
                   </div>
                 </div>
-                <div className='product-info'>
-                  <p className='product-name'>{product.name}</p>
-                  <div className='product-sub-info'>
+                <div className="product-info">
+                  <p className="product-name">{product.name}</p>
+                  <div className="product-sub-info">
                     <p>{product.price.toFixed(2)}$</p>
-                    <button className='product-button' onClick={() => handleCart(product._id)}>Add to Cart</button>
+                    <button
+                      className="product-button"
+                      onClick={() => handleCart(product._id)}
+                    >
+                      Add to Cart
+                    </button>
                   </div>
                 </div>
               </div>
             ))}
           </div>
         )}
-        {messageStatus && <div className='product-message'>
-          <img src={positive === false ? './assets/wrong.png' : './assets/right.png'} alt='img' style={{marginRight: '1rem'}}></img>
-          {message}
-          </div>}
+        {messageStatus && (
+          <div className="product-message">
+            <img
+              src={
+                positive === false ? "./assets/wrong.png" : "./assets/right.png"
+              }
+              alt="img"
+              style={{ marginRight: "1rem" }}
+            ></img>
+            {message}
+          </div>
+        )}
       </div>
     </div>
   );
-}
+};
 export default Product;
