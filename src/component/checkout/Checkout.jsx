@@ -144,7 +144,7 @@ const Checkout = () => {
               <div className="checkout-right">
                 <h1>Payment Details</h1>
                 <div className="payment-card">
-                  <img src="./card.png" alt="Card" />
+                  <img src="./assets/card.png" alt="Card" />
                   <span className="card-name">Visa/Mastercard</span>
                 </div>
                 <div className="payment-cardholder">

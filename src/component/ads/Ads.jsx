@@ -27,7 +27,7 @@ const Ads = () => {
         </ScrollLink>
       </div>
       <div className="ads-img">
-        <img src="./Vector.png" alt="img" className="ads-icon"></img>
+        <img src="./assets/Vector.png" alt="img" className="ads-icon"></img>
       </div>
     </div>
   );
